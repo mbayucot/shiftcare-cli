@@ -1,0 +1,8 @@
+services:
+  shiftcare:
+    build:
+      context: .
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: /bin/sh -c "tail -f /dev/null"

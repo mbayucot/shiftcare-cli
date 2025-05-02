@@ -1,0 +1,37 @@
+# Ignore bundler config
+/.bundle
+/vendor/
+
+# Ignore Ruby artifacts
+*.gem
+*.rbc
+*.log
+*.sqlite3
+*.sqlite3-journal
+*.pid
+
+# Ignore temp files
+/tmp
+/log
+*.swp
+*~
+.DS_Store
+
+# Ignore test coverage reports
+/coverage/
+
+# Ignore Docker and system files
+*.env
+.env.*
+docker-compose.override.yml
+
+# Ignore byebug history
+.byebug_history
+
+# Ignore editors
+.idea/
+.vscode/
+*.code-workspace
+
+# Ignore rspec metadata
+.rspec_status
