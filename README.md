@@ -1,32 +1,57 @@
 # ShiftCare CLI
 
-A Dockerized Ruby command-line tool that allows you to search through client data and identify duplicate email entries.
+A Ruby command-line tool that allows you to search client data and identify duplicate email entries.
+
+![Demo](./demo.png)
 
 ---
 
 ## Features
 
-- Search for clients by partial name match
+- Search clients by partial name match
 - Detect duplicate client emails
-- Built on `dry-transaction` for clean, composable service operations — ensures better error handling and separation of business logic
+- Built on `dry-transaction` for clean, composable service operations — enabling better error handling and separation of business logic
 - RSpec test suite for reliability
 - RuboCop for code quality enforcement
-- Fully Dockerized with Docker Compose support
-
----
-
-## Prerequisites
-
-- Docker
-- Docker Compose
 
 ---
 
 ## Setup
 
+Ensure Ruby is installed:
+
 ```bash
-make build           # Build the Docker image
-make install         # Install Ruby gems inside the container
+ruby -v
+```
+
+Install Bundler:
+
+```bash
+gem install bundler
+```
+
+Install dependencies:
+
+```bash
+bundle install
+```
+
+Make the CLI executable:
+
+```bash
+chmod +x bin/shiftcare
+```
+
+Run the CLI:
+
+```bash
+ruby bin/shiftcare search name "Michael"
+```
+
+Or simply:
+
+```bash
+./bin/shiftcare search name "Michael"
 ```
 
 ---
@@ -36,43 +61,53 @@ make install         # Install Ruby gems inside the container
 To search clients by name:
 
 ```bash
-make run-search
+./bin/shiftcare search name "Michael"
 ```
 
 To check for duplicate emails:
 
 ```bash
-make run-duplicates
+./bin/shiftcare duplicates
 ```
 
-To open an interactive shell inside the container:
+To run tests:
 
 ```bash
-make sh
+rspec
 ```
 
 ---
 
 ## Assumptions and Decisions Made
 
-- Client data is expected to come from a static `clients.json` file at the project root.
-- Searches are currently limited to matching client names only.
-- Duplicate detection is based strictly on matching email fields.
+- Client data is expected to come from a static `clients.json` file located at the project root.
+- Searches are currently limited to name matching only.
+- Duplicate detection is based strictly on the `email` field.
+- `dry-transaction` is used to decouple service logic from the CLI interface, enabling cleaner error handling and easier testing.
 
 ---
 
 ## Known Limitations
 
-- Only supports searching by name — no support for email or ID field search yet.
-- Does not validate email formats.
-- Designed for small-to-medium datasets (fits comfortably in memory).
+- Currently supports searching by name only — not by email or ID.
+- Email format validation is not implemented.
+- Designed for small to medium-sized datasets that can be loaded entirely into memory.
 
 ---
 
 ## Areas for Future Improvement
 
-- Accept arbitrary JSON fields for dynamic searching. This will allow users to search not only by name but also by email, ID, or any other field in the JSON dataset, making the tool more flexible and useful in real-world data exploration.
-- Add pagination support to prevent overwhelming output when dealing with large datasets.
-- Add Bluprinter for lightweight serialization and better formatting of CLI output (e.g. nicely aligned name/email fields), which improves readability without introducing heavy dependencies.
-- Validate and normalize data (e.g. lowercase, strip, email format checks).
-- Improve CLI to support additional flags/args (e.g. --field name --query foo).
+- **Support dynamic field-based searching**  
+  Enable searching by any JSON field, such as `email`, `id`, or custom attributes, for greater flexibility.
+
+- **Add pagination**  
+  Prevent long terminal outputs by paginating results when datasets are large.
+
+- **Integrate Bluprinter for CLI output formatting**  
+  Improve readability and create reusable, customizable serializers.
+
+- **Validate and normalize data**  
+  Trim whitespace, convert fields to lowercase, and verify email formats before processing.
+
+- **Enhance CLI with flags**  
+  Add support for CLI options like `--field name --query Michael` to make usage more intuitive.

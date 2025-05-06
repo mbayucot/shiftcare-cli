@@ -9,20 +9,19 @@ module CLI
       return help if args.empty?
 
       case args.first
-      when 'search' then handle_search(args[1..])
+      when 'search'     then handle_search(args[1..])
       when 'duplicates' then handle_duplicates
       else help
       end
     end
 
     def self.handle_search(args)
-      field = args.length == 2 ? args[0] : 'name'
       query = args.length == 2 ? args[1] : args[0]
-      ClientController.search(field, query)
+      Controllers::ClientController.new.search([query])
     end
 
     def self.handle_duplicates
-      ClientController.duplicates
+      Controllers::ClientController.new.duplicates
     end
 
     def self.help
